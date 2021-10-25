@@ -1,0 +1,48 @@
+version: "3.2"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - rabbitmq_go_net
+    environment:
+        - RABBITMQ_DEFAULT_USER=guest
+        - RABBITMQ_DEFAULT_PASS=guest
+  gig1:
+    image: "node:17.0.1-alpine3.12"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./gig-microservice1:/home/node/app
+    ports:
+      - 3000:3000
+    command: "npm start"
+    networks:
+      - rabbitmq_go_net
+    depends_on:
+      - "rabbitmq"
+  gig2:
+    image: "node:17.0.1-alpine3.12"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./gig-microservice2:/home/node/app
+    ports:
+      - 3001:3001
+    command: "npm start"
+    networks:
+      - rabbitmq_go_net
+    depends_on:
+      - "rabbitmq"
+networks:
+  rabbitmq_go_net:
+    driver: bridge
