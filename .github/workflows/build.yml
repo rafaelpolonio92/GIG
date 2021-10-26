@@ -11,8 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Setup and run tests
+      - name: Setup and run tests Microservice 1
         working-directory: ./gig-microservice1
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test
+      - name: Setup and run tests Microservice 2
+      - uses: actions/checkout@v1
+        working-directory: ./gig-microservice2
         run: |
           npm ci
           npm run build --if-present
