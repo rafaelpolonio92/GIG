@@ -18,4 +18,4 @@ You must have docker installed to execute the next steps:
 
 ### Run tests
 
-  - Inside gig-microservice1 or gig-microservice2 folder, run "npm tests"
+  - Inside gig-microservice1 or gig-microservice2 folder, run "npm test"
